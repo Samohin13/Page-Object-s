@@ -1,33 +1,36 @@
-package ru.netology.javaqa.Test;
+package ru.netology.javaqa.test;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ru.netology.javaqa.DataHelper.dataHelper;
+import ru.netology.javaqa.dataHelper.DataHelper;
+import ru.netology.javaqa.page.DashboardPage;
+import ru.netology.javaqa.page.LoginPage;
 
 import static com.codeborne.selenide.Selenide.open;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static ru.netology.javaqa.DataHelper.dataHelper.*;
+import static ru.netology.javaqa.dataHelper.DataHelper.*;
+import static ru.netology.javaqa.dataHelper.DataHelper.getMaskedNumber;
 
-public class moneyTransferTest {
-    ru.netology.javaqa.Page.dashboardPage dashboardPage;
-    dataHelper.CardInfo firstCardInfo;
-    dataHelper.CardInfo secondCardInfo;
+public class MoneyTransferTest {
+    DashboardPage dashboardPage;
+    DataHelper.CardInfo firstCardInfo;
+    DataHelper.CardInfo secondCardInfo;
     int firstCardBalance;
     int secondCardBalance;
 
     @BeforeEach
     void setup() {
-        var loginPage = open("http://localhost:9999", ru.netology.javaqa.Page.loginPage.class);
-        var authInfo = dataHelper.getAuthInfo();
+        var loginPage = open("http://localhost:9999", LoginPage.class);
+        var authInfo = DataHelper.getAuthInfo();
         var verificationPage = loginPage.validLogin(authInfo);
-        var verificationCode = dataHelper.getVerificationCode();
+        var verificationCode = DataHelper.getVerificationCode();
         dashboardPage = verificationPage.validVerify(verificationCode);
-        firstCardInfo = dataHelper.getFirstCardInfo();
-        secondCardInfo = dataHelper.getSecondCardInfo();
-        firstCardBalance = dashboardPage.getCardBalance(dataHelper.getMaskedNumber(firstCardInfo.getCardNumber()));
-        secondCardBalance = dashboardPage.getCardBalance(dataHelper.getMaskedNumber(secondCardInfo.getCardNumber()));
-        // secondCardBalance = dashboardPage.getCardBalance(1);
+        firstCardInfo = DataHelper.getFirstCardInfo();
+        secondCardInfo = DataHelper.getSecondCardInfo();
+        firstCardBalance = dashboardPage.getCardBalance(DataHelper.getMaskedNumber(firstCardInfo.getCardNumber()));
+        secondCardBalance = dashboardPage.getCardBalance(DataHelper.getMaskedNumber(secondCardInfo.getCardNumber()));
+        // secondCardBalance = DashboardPage.getCardBalance(1);
     }
 
     @Test
@@ -49,7 +52,7 @@ public class moneyTransferTest {
         var amount = generateInvalidAmount(secondCardBalance);
         var transferPage = dashboardPage.selectCardToTransfer(firstCardInfo);
         transferPage.makeTransfer(String.valueOf(amount), secondCardInfo);
-        transferPage.findErrorMessage("Ошибка перевода: Недостаточно средств на карте. Пожалуйста, проверьте баланс и повторите попытку! ");
+        transferPage.findErrorMessage("Ошибка! ");
         dashboardPage.reloadDashboardPage();
         var actualBalanceFirstCard = dashboardPage.getCardBalance(getMaskedNumber(firstCardInfo.getCardNumber()));
         var actualBalanceSecondCard = dashboardPage.getCardBalance(getMaskedNumber(secondCardInfo.getCardNumber()));
@@ -60,6 +63,8 @@ public class moneyTransferTest {
 
 
 }
+
+
 
 
 

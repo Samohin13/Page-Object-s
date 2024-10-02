@@ -1,11 +1,11 @@
-package ru.netology.javaqa.DataHelper;
+package ru.netology.javaqa.dataHelper;
 
 import lombok.Value;
 
 import java.util.Random;
 
-public class dataHelper {
-    private dataHelper(){
+public class DataHelper {
+    private DataHelper(){
 
     }
     public static String getVerificationCode() {

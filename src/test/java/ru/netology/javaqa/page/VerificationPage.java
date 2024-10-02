@@ -1,4 +1,4 @@
-package ru.netology.javaqa.Page;
+package ru.netology.javaqa.page;
 
 
 import com.codeborne.selenide.SelenideElement;
@@ -7,17 +7,17 @@ import com.codeborne.selenide.SelenideElement;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 
-public class verificationPage {
+public class VerificationPage {
     private final SelenideElement codeField = $("[data-test-id=code] input");
     private final SelenideElement verifyButton =$("[data-test-id=action-verify]");
 
-    public verificationPage(){
+    public VerificationPage(){
         codeField.shouldBe(visible);
     }
-    public dashboardPage validVerify(String verificationCode ){
+    public DashboardPage validVerify(String verificationCode ){
         codeField.setValue(verificationCode);
         verifyButton.click();
-        return new dashboardPage();
+        return new DashboardPage();
     }
 }
 
